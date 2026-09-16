@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
-<meta property="og:title" content="Dear <?= htmlspecialchars($ogTitle) ?>, you're invited to The Wedding of Talita & Dafpa" />
+<meta property="og:title" content="Dear ${decodedGuest}, you're invited to our wedding" />
 <meta property="og:type" content="website" />
   <meta property="og:image" content="https://lh3.googleusercontent.com/d/1coll3LTJbqcG-ecuy1cXngCX55kpdavq" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -608,7 +608,7 @@
   // OG 
   const ogTitle = document.querySelector('meta[property="og:title"]');
   if (ogTitle) {
-    ogTitle.setAttribute('content', `Dear ${decodedGuest}`);
+    ogTitle.setAttribute('content', `Dear ${decodedGuest}, you're invited to our wedding`);
   }
   document.title = `Dear ${decodedGuest}`;
 }
