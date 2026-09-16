@@ -134,9 +134,13 @@
     }
 
     .HOME {
-      position: relative;
       width: 100%;
-    }
+  min-height: 100vh;  /* Fallback browser lama */
+  min-height: 100dvh; /* Menutup bocor bawah di Safari iOS */
+  position: relative;
+  overflow: hidden;   /* Mencegah scrollbar horizontal yang tidak diinginkan */
+}
+
 
     .gn-centered {
       position: absolute;
@@ -361,7 +365,9 @@
       <img 
         class="drive-image" 
         src="https://lh3.googleusercontent.com/d/1BjNexL8odVphTZe8lnwrqOeknzK8VfrG"
-        style="width: 100%; cursor: pointer;" 
+        style="width: 100%; height: 100dvh;
+  object-fit: cover;  /* Menjamin gambar penuh tanpa bocor kanan, kiri, atas, maupun bawah */
+  object-position: center; cursor: pointer;" 
         alt="Invitation Home"
       >
     </a>
