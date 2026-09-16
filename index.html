@@ -241,18 +241,18 @@
       background: #ffffff;
     }
 
-    .video-background iframe {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100vw;
-      height: 100vh;
-      min-height: 300vh;
-      min-width: 300vw;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-      pointer-events: none;
-    }
+ .video-background iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 56.25vw; /* Menjaga rasio 16:9 berdasarkan lebar layar */
+  min-height: 100vh;
+  min-width: 177.77vh; /* Menjaga rasio 16:9 berdasarkan tinggi layar */
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
 
     /* Style the image to look clickable */
     .gift-image {
