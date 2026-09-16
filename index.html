@@ -1,0 +1,62 @@
+const SPREADSHEET_ID = '1i5Yn-j62U8iRPQ_CtanihUMGqHIFMG-NOyuGVrgEEsA';
+const SHEET_NAME = 'wishes';
+
+function doGet(e) {
+  // Create dynamic template from Index.html
+  const template = HtmlService.createTemplateFromFile('Index');
+
+  // Read 'name' parameter from URL (e.g., ?name=Lolita)
+  // Default to 'Guest' if no name parameter is provided
+  template.guestName = (e && e.parameter && e.parameter.name) ? e.parameter.name : 'Guest';
+
+  return template
+    .evaluate()
+    .setTitle('The Wedding of Talita & Dafpa')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function getWishes() {
+  const sheet = SpreadsheetApp
+    .openById(SPREADSHEET_ID)
+    .getSheetByName(SHEET_NAME);
+
+  if (!sheet) {
+    throw new Error('Sheet "wishes" not found.');
+  }
+
+  const data = sheet.getDataRange().getValues();
+
+  if (data.length <= 1) {
+    return [];
+  }
+
+  const headers = data[0].map(h => String(h).trim());
+
+  const nameIndex = headers.indexOf('Guest Name');
+  const wishesIndex = headers.indexOf('Your Warm Wishes');
+
+  if (nameIndex === -1 || wishesIndex === -1) {
+    throw new Error(
+      'Could not find "Guest Name" and/or "Your Warm Wishes" headers.'
+    );
+  }
+
+  return data
+    .slice(1)
+    .filter(row => row[nameIndex] && row[wishesIndex])
+    .map(row => ({
+      name: String(row[nameIndex]),
+      wish: String(row[wishesIndex])
+    }))
+    .reverse();
+}
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzUDjZsDCa9DX4pmfQ-yxsftHGdKs76lb1E8jeagSrxEcYwWjMD3mwNGTw3-ph8rntO/exec';
+
+// Contoh handler form
+document.forms['form-ucapan'].addEventListener('submit', e => {
+  e.preventDefault();
+  fetch(scriptURL, { method: 'POST', body: new FormData(e.target) })
+    .then(res => alert('Ucapan berhasil terkirim!'))
+    .catch(err => console.error('Error!', err.message));
+});
