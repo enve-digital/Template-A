@@ -250,13 +250,15 @@
 
     /* Style the image to look clickable */
     .gift-image {
-      width: 150px;
+      width: 100%;
       cursor: pointer;
       transition: transform 0.2s ease;
+      position: relative;
+      z-index: 5;
     }
     
     .gift-image:hover {
-      transform: scale(1.05);
+      transform: scale(1.02);
     }
 
     /* Base styles for the hidden container */
@@ -264,17 +266,21 @@
       opacity: 0;
       max-height: 0;
       overflow: hidden;
-      margin-top: 15px;
+      margin-top: 15px auto 0;
       font-family: 'Bellefair', serif;
       font-size: 20px;
       font-weight: bold;
       color: #ffffff;
-      transition: opacity 0.5s ease, max-height 0.5s ease; 
+      transition: opacity 0.5s ease, max-height 0.5s ease, padding 0.5s ease;
+      position: relative;
+      z-index: 10;
+      text-align: center;
     }
 
     #hidden-gift.show {
       opacity: 1;
-      max-height: 80px;
+      max-height: 120px;
+      padding: 10px 0;
     }
   </style>
 </head>
@@ -506,14 +512,19 @@
       }
     });
 
-    // 4. GIFT BUTTON TOGGLE
-    const giftBtn = document.getElementById('giftBtn');
-    const hiddenGift = document.getElementById('');
-    if (giftBtn && hiddenGift) {
-      giftBtn.addEventListener('click', () => {
-        hiddenGift.classList.toggle('show');
+  // 4. GIFT BUTTON TOGGLE
+      document.addEventListener('DOMContentLoaded', () => {
+        const giftBtn = document.getElementById('giftBtn');
+        const hiddenGift = document.getElementById('hidden-gift'); // Sudah diisi 'hidden-gift'
+  
+        if (giftBtn && hiddenGift) {
+          giftBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            hiddenGift.classList.toggle('show');
+          });
+        }
       });
-    }
 
     // 5. GET GUEST NAME FROM URL PARAMS (?to=Nama atau ?name=Nama)
     function getGuestName() {
