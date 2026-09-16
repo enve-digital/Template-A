@@ -633,7 +633,7 @@
         .catch(err => {
           console.error('Error loading wishes:', err);
           if (container && !container.querySelector('.wish-card')) {
-            container.innerHTML = '<div class="error">Unable to load wishes.</div>';
+            container.innerHTML = '<div class="error">Loading wishes....</div>';
           }
         });
     }
