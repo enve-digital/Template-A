@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
-  <meta property="og:title" content="The Wedding of Talita &amp; Dafpa" />
+  <meta property="og:title" content="Dear <?= ogTitle ?>, you're invited to The Wedding of Talita & Dafpa" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://lh3.googleusercontent.com/d/1coll3LTJbqcG-ecuy1cXngCX55kpdavq" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -595,14 +595,24 @@
 
     // 5. GET GUEST NAME FROM URL PARAMS (?to=Nama atau ?name=Nama)
     function getGuestName() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const guest = urlParams.get('to') || urlParams.get('name') || 'Guest';
-      const guestContainer = document.getElementById('guestName');
-      
-      if (guestContainer) {
-        guestContainer.innerText = decodeURIComponent(guest);
-      }
-    }
+  const urlParams = new URLSearchParams(window.location.search);
+  const guest = urlParams.get('to') || urlParams.get('name') || 'Guest';
+  const decodedGuest = decodeURIComponent(guest);
+
+  // div
+  const guestContainer = document.getElementById('guestName');
+  if (guestContainer) {
+    guestContainer.innerText = decodedGuest;
+  }
+  
+  // OG 
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) {
+    ogTitle.setAttribute('content', `Dear ${decodedGuest}`);
+  }
+  document.title = `Dear ${decodedGuest}`;
+}
+
 
     // 6. FETCH WISHES FROM GOOGLE APPS SCRIPT
     function loadWishes() {
