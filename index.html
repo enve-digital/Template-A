@@ -531,7 +531,7 @@
     function loadWishes() {
       const container = document.getElementById('wishesContainer');
       
-      fetch(SCRIPT_URL)
+      fetch('https://script.google.com/macros/s/AKfycbxBDe1iPGhyuco5RpYna6tvjIk-H9AInWfWS4ne7BCBy0-TgGjePANXBJrQAMNkb0UCog/exec')
         .then(response => response.json())
         .then(data => {
           if (!container) return;
