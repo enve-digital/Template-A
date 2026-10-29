@@ -625,26 +625,38 @@
           <input type="text" id="rsvpName" readonly style="opacity: 0.8; cursor: not-allowed;">
         </div>
 
-        <div class="form-group">
+<div class="form-group">
           <label>Will you be joining us?</label>
-          <div class="radio-group">
-          <span> <label style="font-family:'Bellefair;align-items: flex-end'!important; "><input type="radio" name="attendance" value="Hadir" required onchange="togglePaxField()"> Yes 
+          
+          <!-- Kontainer utama diatur vertikal ke bawah -->
+          <div class="radio-group" style="display: flex; flex-direction: column; gap: 12px;">
             
-                      <!-- Kolom jumlah tamu yang otomatis tersembunyi jika memilih Tidak Hadir -->
-        <div class="form-group" id="paxContainer" style="display: none;">
-          <select id="rsvpPax">
-            <option value="1">I</option>
-            <option value="2">my partner & I</option>
-          </select>
-          will be there </label></span>
-        </div>
+            <!-- BARIS 1: Opsi YES (Isinya dibuat flex horizontal) -->
+            <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <label style="font-family:'Bellefair'!important; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <input type="radio" name="attendance" value="Hadir" required onchange="togglePaxField()"> Yes
+              </label>
+              
+              <!-- Kolom jumlah tamu (Dropdown) yang muncul saat ditick -->
+              <div id="paxContainer" style="display: none; align-items: center;">
+                <select id="rsvpPax" style="padding: 4px 8px; font-family:'Bellefair', serif;">
+                  <option value="1">I</option>
+                  <option value="2">my partner & I</option>
+                </select>
+              </div>
+              
+              <span style="font-family:'Bellefair'!important;" id="willBeThereText" style="display: none;">will be there</span>
+            </div>
             
-            
+            <!-- BARIS 2: Opsi NO (Otomatis turun ke bawah karena flex-direction: column) -->
+            <div>
+              <label style="font-family:'Bellefair'!important; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                <input type="radio" name="attendance" value="Tidak Hadir" required onchange="togglePaxField()"> Sorry, can't make it
+              </label>
+            </div>
 
-            <span>  <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Tidak Hadir" required onchange="togglePaxField()"> Sorry, can't make it</label></span>
           </div>
         </div>
-
        
         <div class="form-group">
           <label>Your Warm Wishes</label>
@@ -879,34 +891,38 @@ setInterval(updateCountdown, 1000);
       }
     }
 
-    function tutupRsvpPopup() {
+  function tutupRsvpPopup() {
       const modal = document.getElementById('customRsvpModal');
       if (modal) {
         modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Kembalikan scroll halaman
+        document.body.style.overflow = 'auto';
         
-        // Reset form dan sembunyikan kembali pilihan pax
         document.getElementById('paxContainer').style.display = 'none';
+        const willBeThereText = document.getElementById('willBeThereText');
+        if (willBeThereText) willBeThereText.style.display = 'none';
+        
         document.getElementById('rsvpForm').reset();
       }
     }
 
     // Fungsi untuk menampilkan/menyembunyikan jumlah tamu
-    function togglePaxField() {
+  function togglePaxField() {
       const hadirRadio = document.querySelector('input[name="attendance"][value="Hadir"]');
       const paxContainer = document.getElementById('paxContainer');
+      const willBeThereText = document.getElementById('willBeThereText');
       const rsvpPax = document.getElementById('rsvpPax');
 
       if (hadirRadio && hadirRadio.checked) {
-        paxContainer.style.display = 'block'; 
+        paxContainer.style.display = 'inline-flex'; // Munculkan dropdown
+        if (willBeThereText) willBeThereText.style.display = 'inline'; // Munculkan teks
         rsvpPax.required = true; 
       } else {
-        paxContainer.style.display = 'none';  
+        paxContainer.style.display = 'none';  // Sembunyikan dropdown
+        if (willBeThereText) willBeThereText.style.display = 'none'; // Sembunyikan teks
         rsvpPax.required = false;
         rsvpPax.value = "1"; 
       }
     }
-
     // Fungsi Submit Form RSVP ke Google Apps Script
     function submitRsvpForm(e) {
       e.preventDefault();
