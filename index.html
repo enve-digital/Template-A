@@ -629,19 +629,18 @@
           <label>Will you be joining us?</label>
           <div class="radio-group">
           <span> <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Hadir" required onchange="togglePaxField()"> Yes, will attend</label></span>
-          <span>  <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Tidak Hadir" required onchange="togglePaxField()"> Sorry, can't make it</label></span>
+          <!-- Kolom jumlah tamu yang otomatis tersembunyi jika memilih Tidak Hadir -->
+        <div class="form-group" id="paxContainer" style="display: none;">
+          <select id="rsvpPax">
+            <option value="1">1 guest</option>
+            <option value="2">2 guests</option>
+          </select>
+        </div>
+            <span>  <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Tidak Hadir" required onchange="togglePaxField()"> Sorry, can't make it</label></span>
           </div>
         </div>
 
-        <!-- Kolom jumlah tamu yang otomatis tersembunyi jika memilih Tidak Hadir -->
-        <div class="form-group" id="paxContainer" style="display: none;">
-          <label>Number of Guests</label>
-          <select id="rsvpPax">
-            <option value="1">1 Person (Me)</option>
-            <option value="2">2 People (Me and Partner)</option>
-          </select>
-        </div>
-
+       
         <div class="form-group">
           <label>Your Warm Wishes</label>
           <textarea id="rsvpWish" placeholder="A little note for us"></textarea>
