@@ -340,7 +340,7 @@
   margin-top: -14px;
 }
 
-/* Modal / Popup Overlay */
+/* ================= CUSTOM RSVP ENVELOPE POPUP CSS ================= */
     .envelope-modal {
       display: none;
       position: fixed;
@@ -357,9 +357,12 @@
       box-sizing: border-box;
     }
 
-    /* Kartu Surat / Amplop Container */
     .envelope-card {
-      background: #2b1b1b; /* Sesuaikan warna latar belakang kartu surat */
+      /* Ganti URL di bawah dengan link gambar background pilihanmu */
+      background: linear-gradient(rgba(43, 27, 27, 0.85), rgba(43, 27, 27, 0.85)), 
+                  url('https://images.pexels.com/photos/30704296/pexels-photo-30704296.jpeg');
+      background-size: cover;
+      background-position: center;
       border: 2px solid #d9d5ca;
       border-radius: 12px;
       width: 100%;
@@ -461,7 +464,6 @@
     .envelope-submit-btn:hover {
       background: #ffffff;
     }
-
     
   </style>
 </head>
@@ -607,7 +609,12 @@
       >
     </a>
   </div>
-<!-- CUSTOM RSVP ENVELOPE MODAL -->
+<!-- TOMBOL RSVP -->
+  <div style="height: 5dvh; padding: 2px; align-items: center; justify-content: center; text-align: center;">
+    <a href="javascript:void(0);" class="button" onclick="bukaRsvpPopup()" style="margin-top: 6px;">RSVP</a>
+  </div>
+
+  <!-- CUSTOM RSVP ENVELOPE MODAL (HTML) -->
   <div id="customRsvpModal" class="envelope-modal">
     <div class="envelope-card">
       <button class="envelope-close" onclick="tutupRsvpPopup()">&times;</button>
@@ -622,12 +629,13 @@
         <div class="form-group">
           <label>Attendance Confirmation</label>
           <div class="radio-group">
-            <label><input type="radio" name="attendance" value="Hadir" required> Yes, will attend</label>
-            <label><input type="radio" name="attendance" value="Tidak Hadir" required> Sorry, can't make it</label>
+            <label><input type="radio" name="attendance" value="Hadir" required onchange="togglePaxField()"> Yes, will attend</label>
+            <label><input type="radio" name="attendance" value="Tidak Hadir" required onchange="togglePaxField()"> Sorry, can't make it</label>
           </div>
         </div>
 
-        <div class="form-group">
+        <!-- Kolom jumlah tamu yang otomatis tersembunyi jika memilih Tidak Hadir -->
+        <div class="form-group" id="paxContainer" style="display: none;">
           <label>Number of Guests</label>
           <select id="rsvpPax">
             <option value="1">1 Person (Me)</option>
@@ -854,14 +862,14 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// 10. CUSTOM RSVP ENVELOPE POPUP FUNCTIONS
+// ================= CUSTOM RSVP POPUP & DYNAMIC PAX FUNCTIONS =================
     function bukaRsvpPopup() {
       const modal = document.getElementById('customRsvpModal');
       if (modal) {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Kunci scroll halaman belakang
         
-        // Otomatis isi nama tamu sesuai dengan nama di URL (?to=...)
+        // Otomatis isi nama tamu sesuai URL (?to=...)
         const urlParams = new URLSearchParams(window.location.search);
         const guest = urlParams.get('to') || urlParams.get('name') || 'Guest';
         document.getElementById('rsvpName').value = decodeURIComponent(guest);
@@ -873,10 +881,30 @@ setInterval(updateCountdown, 1000);
       if (modal) {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto'; // Kembalikan scroll halaman
+        
+        // Reset form dan sembunyikan kembali pilihan pax
+        document.getElementById('paxContainer').style.display = 'none';
+        document.getElementById('rsvpForm').reset();
       }
     }
 
-    // Fungsi saat form RSVP dikirim (bisa dihubungkan ke Google Apps Script kamu)
+    // Fungsi untuk menampilkan/menyembunyikan jumlah tamu
+    function togglePaxField() {
+      const hadirRadio = document.querySelector('input[name="attendance"][value="Hadir"]');
+      const paxContainer = document.getElementById('paxContainer');
+      const rsvpPax = document.getElementById('rsvpPax');
+
+      if (hadirRadio && hadirRadio.checked) {
+        paxContainer.style.display = 'block'; 
+        rsvpPax.required = true; 
+      } else {
+        paxContainer.style.display = 'none';  
+        rsvpPax.required = false;
+        rsvpPax.value = "1"; 
+      }
+    }
+
+    // Fungsi Submit Form RSVP ke Google Apps Script
     function submitRsvpForm(e) {
       e.preventDefault();
       
@@ -885,14 +913,12 @@ setInterval(updateCountdown, 1000);
       const pax = document.getElementById('rsvpPax').value;
       const wish = document.getElementById('rsvpWish').value;
 
-      // Contoh pengiriman data ke Google Apps Script (SCRIPT_URL milikmu)
       const formData = new URLSearchParams();
       formData.append('name', name);
       formData.append('attendance', attendance);
-      formData.append('pax', pax);
+      formData.append('pax', attendance === 'Hadir' ? pax : '0'); // Jika tidak hadir, pax otomatis 0
       formData.append('wish', wish);
 
-      // Ubah tombol jadi loading sementara
       const submitBtn = document.querySelector('.envelope-submit-btn');
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
@@ -904,11 +930,10 @@ setInterval(updateCountdown, 1000);
       .then(response => {
         alert('Thank you! Your confirmation and wishes have been sent.');
         tutupRsvpPopup();
-        document.getElementById('rsvpForm').reset();
         submitBtn.textContent = 'Send Confirmation';
         submitBtn.disabled = false;
         
-        // Refresh ucapan jika fungsi loadWishes ada
+        // Refresh daftar ucapan jika fungsi loadWishes tersedia
         if (typeof loadWishes === 'function') {
           loadWishes();
         }
@@ -921,7 +946,7 @@ setInterval(updateCountdown, 1000);
       });
     }
 
-    // Tutup popup jika user klik di luar kotak amplop
+    // Tutup popup otomatis jika user klik area luar (background gelap)
     window.addEventListener('click', function(event) {
       const modal = document.getElementById('customRsvpModal');
       if (event.target === modal) {
