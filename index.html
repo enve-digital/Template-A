@@ -618,19 +618,18 @@
   <div id="customRsvpModal" class="envelope-modal">
     <div class="envelope-card">
       <button class="envelope-close" onclick="tutupRsvpPopup()">&times;</button>
-      <h3>Will You Be Joining Us?</h3>
-      
+       
       <form id="rsvpForm" onsubmit="submitRsvpForm(event)">
         <div class="form-group">
-          <label>Your Name</label>
+          <label>From</label>
           <input type="text" id="rsvpName" readonly style="opacity: 0.8; cursor: not-allowed;">
         </div>
 
         <div class="form-group">
-          <label>Attendance Confirmation</label>
+          <label>Will you be joining us?</label>
           <div class="radio-group">
-            <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Hadir" required onchange="togglePaxField()"> Yes, will attend</label>
-            <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Tidak Hadir" required onchange="togglePaxField()"> Sorry, can't make it</label>
+          <span> <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Hadir" required onchange="togglePaxField()"> Yes, will attend</label></span>
+          <span>  <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Tidak Hadir" required onchange="togglePaxField()"> Sorry, can't make it</label></span>
           </div>
         </div>
 
@@ -644,11 +643,11 @@
         </div>
 
         <div class="form-group">
-          <label>Your Warm Wishes / A Little Note for Us</label>
-          <textarea id="rsvpWish" placeholder="Write your wishes here..."></textarea>
+          <label>Your Warm Wishes</label>
+          <textarea id="rsvpWish" placeholder="A little note for us"></textarea>
         </div>
 
-        <button type="submit" class="envelope-submit-btn">Send Confirmation</button>
+        <button type="submit" class="envelope-submit-btn">Confirm</button>
       </form>
     </div>
   </div>
