@@ -364,7 +364,7 @@
     .envelope-card {
       /* Ganti URL di bawah dengan link gambar background pilihanmu */
       background: url('https://lh3.googleusercontent.com/d/1DRiK_sx5esnx4aPEeAhwa9XNHq1mlXa0');
-      background-size: cover;
+      background-size: contain;
       background-position: center;
       width: 100%;
       max-width: 450px;
@@ -409,6 +409,7 @@
     .form-group label {
       display: block;
       font-family:'New-Icon-Script', cursive;
+      font-weight:800;
       font-size: 13px;
       margin-bottom: 5px;
       color: #d9d5ca;
@@ -627,8 +628,8 @@
         <div class="form-group">
           <label>Attendance Confirmation</label>
           <div class="radio-group">
-            <label><input type="radio" name="attendance" value="Hadir" required onchange="togglePaxField()"> Yes, will attend</label>
-            <label><input type="radio" name="attendance" value="Tidak Hadir" required onchange="togglePaxField()"> Sorry, can't make it</label>
+            <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Hadir" required onchange="togglePaxField()"> Yes, will attend</label>
+            <label style="font-family:'Bellefair'!important;"><input type="radio" name="attendance" value="Tidak Hadir" required onchange="togglePaxField()"> Sorry, can't make it</label>
           </div>
         </div>
 
